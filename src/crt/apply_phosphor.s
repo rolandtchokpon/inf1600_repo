@@ -38,4 +38,3 @@ applyPhosphor:
     # epilogue
     leave 
     ret   
-

@@ -1,7 +1,7 @@
 # Compiles assembly and C++ files
 # Abdul-W. Chaarani 2024  
 CXX = g++
-CXXFLAGS = -m32 -g
+CXXFLAGS = -m32 -g -std=c++17
 AS = gcc
 ASFLAGS = -m32 -g
 

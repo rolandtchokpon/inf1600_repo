@@ -35,8 +35,6 @@ sierpinskiImage:
     movl    %esp, %ebp                  
 
     # TODO
-
     # epilogue
     leave 
     ret   
-

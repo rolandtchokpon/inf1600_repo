@@ -20,32 +20,26 @@ applyScanline:
     pushl   %ebp                      
     movl    %esp, %ebp                  
 
-    # TODO
-    //charger p
-    movl 8(%ebp), %ecx
+    movl    8(%ebp), %ecx      # Pixel*
 
-    
-    //Traiter r de pixel
-    movzbl (%ecx), %eax
-    imull 12(%ebp), %eax
-    xorl %edx, %edx
-    divl percent_conversion 
-    movb %al, (%ecx)  
+    movzbl  (%ecx), %eax
+    imull   12(%ebp), %eax
+    xorl    %edx, %edx
+    divl    percent_conversion
+    movb    %al, (%ecx)
 
-    //Traiter g de pixel
-    movzbl 1(%ecx), %eax
-    imull 12(%ebp), %eax
-    xorl %edx, %edx
-    divl percent_conversion 
-    movb %al, 1(%ecx)  
+    movzbl  1(%ecx), %eax
+    imull   12(%ebp), %eax
+    xorl    %edx, %edx
+    divl    percent_conversion
+    movb    %al, 1(%ecx)
 
-    //Traiter b de pixel
-    movzbl 2(%ecx), %eax
-    imull 12(%ebp), %eax
-    xorl %edx, %edx
-    divl percent_conversion 
-    movb %al, 2(%ecx)  
-
+    movzbl  2(%ecx), %eax
+    imull   12(%ebp), %eax
+    xorl    %edx, %edx
+    divl    percent_conversion
+    movb    %al, 2(%ecx)
+   
     # epilogue
     leave 
     ret   
