@@ -34,7 +34,72 @@ applyPhosphor:
     movl    %esp, %ebp                  
 
     # TODO
+    
+    #Charger p
+    movl 8(%ebp), %ecx
+
+
+    #Vérifier si subpixel egal zero
+    movl 12(%ebp), %eax
+    cmpl $0, %eax
+    jz subpixelEgalZero
+
+    #Vérifier si subpixel egal un
+    movl 12(%ebp), %eax
+    cmpl $1, %eax
+    jz subpixelEgalUn
+
+    sinon:
+    #traiter r
+    movzbl 0(%ecx), %eax
+    imull factor, %eax
+    xorl %edx, %edx
+    divl percent_conversion
+    movb %al, 0(%ecx)
+
+    #traiter g
+    movzbl 1(%ecx), %eax
+    imull factor, %eax
+    xorl %edx, %edx
+    divl percent_conversion
+    movb %al, 1(%ecx)
+
+    jmp fin
+
+
+    subpixelEgalUn:
+    #traiter r
+    movzbl 0(%ecx), %eax
+    imull factor, %eax
+    xorl %edx, %edx
+    divl percent_conversion
+    movb %al, 0(%ecx)
+
+    #traiter b
+    movzbl 2(%ecx), %eax
+    imull factor, %eax
+    xorl %edx, %edx
+    divl percent_conversion
+    movb %al, 2(%ecx)
+
+    jmp fin
+
+    subpixelEgalZero:
+    #traiter g
+    movzbl 1(%ecx), %eax
+    imull factor, %eax
+    xorl %edx, %edx
+    divl percent_conversion
+    movb %al, 1(%ecx)
+
+    #traiter b
+    movzbl 2(%ecx), %eax
+    imull factor, %eax
+    xorl %edx, %edx
+    divl percent_conversion
+    movb %al, 2(%ecx)
 
     # epilogue
+    fin:
     leave 
     ret   
