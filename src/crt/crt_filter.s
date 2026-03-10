@@ -32,10 +32,90 @@ max_index:
 crtFilter:
     # prologue
     pushl   %ebp                      
-    movl    %esp, %ebp                  
+    movl    %esp, %ebp 
+
+    #reserver de la memoire pour x et y
+    subl $8, %esp                 
 
     # TODO
-   
+    pushl %edi
+    pushl %esi
+    pushl %ebx
+
+    #charger image
+    movl 8(%ebp), %ecx
+    #recupere pixel** dimage struct
+    movl 8(%ecx), %edi
+
+    #initialiser y
+    movl $0, -4(%ebp)
+boucle_y:
+    movl 8(%ebp), %ecx
+    movl -4(%ebp), %eax
+    cmpl  4(%ecx), %eax
+    jae fin
+    
+    #recuperer le numero de ligne du pixel courant
+    movl (%edi, %eax, 4), %ebx
+
+    #initialiser x
+    movl $0, -8(%ebp)
+boucle_x:
+    movl 8(%ebp), %ecx
+    movl -8(%ebp), %eax
+    cmpl 0(%ecx), %eax
+    jae ligne_suivante
+
+    #recuperer ladresse du pixel sur x
+    leal (%ebx, %eax, 4), %esi
+
+    #on controle que y soit multiple de scanlineSpacing
+    movl -4(%ebp), %eax
+    xorl %edx, %edx
+    movl 12(%ebp), %ecx
+    divl %ecx
+    cmpl $0, %edx
+    jne apply_scanline
+
+    #si multiple appliquer 60% dassombrissement
+    pushl less_color
+    pushl %esi
+    call applyScanline
+    add $8, %esp
+    jmp apply_phosphor
+
+    #sinon garder lasssombrissement 100%
+    apply_scanline:
+    pushl full_color
+    pushl %esi
+    call applyScanline
+    add $8, %esp
+
+    #determiner la position horizontal du pixel
+    apply_phosphor:
+    movl -8(%ebp), %eax
+    xorl %edx, %edx
+    movl max_index, %ecx
+    divl %ecx
+    
+    #appel dapplyPhosphor
+    pushl %edx
+    pushl %esi
+    call applyPhosphor
+    add $8, %esp
+
+    #incrementation de x pour passer a la valeur suivante
+    incl -8(%ebp)
+    jmp boucle_x
+
+    ligne_suivante:
+    incl -4(%ebp)
+    jmp boucle_y
+
     # epilogue
+    fin:
+    popl %ebx
+    popl %esi
+    popl %edi
     leave 
     ret 
