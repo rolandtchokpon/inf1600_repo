@@ -28,12 +28,12 @@ outputSierpinski:
 main:
     # prologue
     pushl   %ebp                      
-    movl    %esp, %ebp                  
+    movl    %esp, %ebp    
 
     #################### Filtre CRT #######################
 
     # TODO: Charger l'image inputCrt en appelant loadImage()
-
+    
     # TODO: Appliquer le filtre crtFilter() sur cette image
 
     # TODO: Sauvegarder cette image dans le fichier outputCrt avec saveImage()
