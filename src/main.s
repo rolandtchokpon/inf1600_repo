@@ -26,20 +26,40 @@ outputSierpinski:
 .globl main                      
 
 main:
-    # prologue
+# prologue
     pushl   %ebp                      
     movl    %esp, %ebp    
+    subl    $4, %esp              
 
     #################### Filtre CRT #######################
 
     # TODO: Charger l'image inputCrt en appelant loadImage()
-    
+    #charger limage
+    movl 8(%ebp), %ecx
+
+    movl inputCrt, %ecx
+
+    pushl %ecx
+    pushl -4(%ebp)
+    call loadImage
+    addl $8, %esp
     # TODO: Appliquer le filtre crtFilter() sur cette image
 
+    pushl $3
+    pushl %ecx
+    call crtFilter
+    addl $8, %esp
     # TODO: Sauvegarder cette image dans le fichier outputCrt avec saveImage()
+    pushl %ecx
+    pushl -4(%ebp)
+    call saveImage
+    movl 8(%ebp), outputCrt
+    addl $8, %esp
 
     # TODO: Libérer la mémoire de vos images avec freeImage()
-
+    pushl 8(%ebp)
+    call freeImage
+    addl $4, %esp
     #################### Triangle de Sierpinski #######################
 
 
